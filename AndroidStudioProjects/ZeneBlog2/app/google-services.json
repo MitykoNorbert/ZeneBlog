@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "89429195211",
+    "project_id": "mobilalk-933e3",
+    "storage_bucket": "mobilalk-933e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89429195211:android:7d7211bdd93fdc6df7de4e",
+        "android_client_info": {
+          "package_name": "com.example.zeneblog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "89429195211-grc210fnmi0c9ldqg77jjn1id8na0m2b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABbmZEOPUgZjuhcbSkZOQdl6YuSlOe0Q8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "89429195211-grc210fnmi0c9ldqg77jjn1id8na0m2b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
