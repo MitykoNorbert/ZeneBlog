@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +26,8 @@ public class AddPostActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private String postID;
+    private String postAuthor;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +35,12 @@ public class AddPostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_post);
         postNameEdt = findViewById(R.id.idEditPostName);
         postDescEdt = findViewById(R.id.idEditPostText);
+        mAuth =FirebaseAuth.getInstance();
         addPostBtn = findViewById(R.id.idBtnAddPost);
         loadingPB = findViewById(R.id.idPBLoading);
         postDescEdt = findViewById(R.id.idEditPostText);
         firebaseDatabase = FirebaseDatabase.getInstance();
+
         databaseReference = firebaseDatabase.getReference("Posts");
         addPostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,14 +49,20 @@ public class AddPostActivity extends AppCompatActivity {
                 String postName = postNameEdt.getText().toString();
                 String postDesc = postDescEdt.getText().toString();
                 postID = postName;
-                PostRVModal postRVModal = new PostRVModal(postName,postDesc,postID);
+                postAuthor = mAuth.getCurrentUser().getEmail();
+                PostRVModal postRVModal = new PostRVModal(postName,postDesc,postID,postAuthor);
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        databaseReference.child(postID).setValue(postRVModal);
-                        Toast.makeText(AddPostActivity.this, "Post published", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(AddPostActivity.this,MainActivity.class));
+                        if(snapshot.child(postID).exists()){
+                            Toast.makeText(AddPostActivity.this, "Post already exists. Change title", Toast.LENGTH_SHORT).show();
+                        }else{
+                            databaseReference.child(postID).setValue(postRVModal);
+                            Toast.makeText(AddPostActivity.this, "Post published", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(AddPostActivity.this,MainActivity.class));
+                        }
+
                         loadingPB.setVisibility(View.GONE);
                     }
 

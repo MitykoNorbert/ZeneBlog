@@ -6,10 +6,23 @@
     android:layout_height="match_parent"
     android:background="@color/customshade1"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="0dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/idLogOut"
+        android:text="Sign out"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/idRVPosts"
+        android:layout_below="@id/idLogOut"
+
         />
     <ProgressBar
         android:layout_width="wrap_content"
@@ -23,6 +36,7 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/idAddFAB"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:backgroundTint="@color/customshade2"

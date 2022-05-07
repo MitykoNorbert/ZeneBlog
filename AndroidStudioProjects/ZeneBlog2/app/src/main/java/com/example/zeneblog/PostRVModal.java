@@ -7,21 +7,32 @@ public class PostRVModal implements Parcelable {
     private String postName;
     private String postDescription;
     private String postID;
+    private String postAuthor;
 
     public PostRVModal(){
 
     }
 
-    public PostRVModal(String postName, String postDescription, String postID) {
+    public PostRVModal(String postName, String postDescription, String postID, String postAuthor) {
         this.postName = postName;
         this.postDescription = postDescription;
         this.postID = postID;
+        this.postAuthor = postAuthor;
+    }
+
+    public String getPostAuthor() {
+        return postAuthor;
+    }
+
+    public void setPostAuthor(String postAuthor) {
+        this.postAuthor = postAuthor;
     }
 
     protected PostRVModal(Parcel in) {
         postName = in.readString();
         postDescription = in.readString();
         postID = in.readString();
+        postAuthor = in.readString();
     }
 
     public static final Creator<PostRVModal> CREATOR = new Creator<PostRVModal>() {
@@ -70,5 +81,6 @@ public class PostRVModal implements Parcelable {
         parcel.writeString(postName);
         parcel.writeString(postDescription);
         parcel.writeString(postID);
+        parcel.writeString(postAuthor);
     }
 }
