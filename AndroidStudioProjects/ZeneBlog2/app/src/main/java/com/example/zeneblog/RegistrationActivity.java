@@ -2,7 +2,10 @@ package com.example.zeneblog;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -26,9 +29,12 @@ public class RegistrationActivity extends AppCompatActivity {
     private ProgressBar loadingPB;
     private TextView loginTV;
     private FirebaseAuth mAuth;
+    private NotificationHandler notificationHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_registration);
         userNameEdt = findViewById(R.id.idEditUserName);
         pwdEdt = findViewById(R.id.idEditPassword);
@@ -37,6 +43,11 @@ public class RegistrationActivity extends AppCompatActivity {
         loadingPB = findViewById(R.id.idPBLoading);
         loginTV = findViewById(R.id.idTVLogin);
         mAuth = FirebaseAuth.getInstance();
+        notificationHandler = new NotificationHandler(this);
+
+
+
+
         loginTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +80,7 @@ public class RegistrationActivity extends AppCompatActivity {
                              if(task.isSuccessful()){
                                  loadingPB.setVisibility(View.GONE);
                                  Toast.makeText(RegistrationActivity.this, "Successful registration!", Toast.LENGTH_SHORT).show();
+                                 notificationHandler.send(userName);
                                  Intent i = new Intent(RegistrationActivity.this, LoginActivity.class);
                                  finish();
                              }else{

@@ -29,6 +29,7 @@ public class AddPostActivity extends AppCompatActivity {
     private String postAuthor;
     private FirebaseAuth mAuth;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +42,7 @@ public class AddPostActivity extends AppCompatActivity {
         postDescEdt = findViewById(R.id.idEditPostText);
         firebaseDatabase = FirebaseDatabase.getInstance();
 
+
         databaseReference = firebaseDatabase.getReference("Posts");
         addPostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,22 +50,19 @@ public class AddPostActivity extends AppCompatActivity {
                 loadingPB.setVisibility(View.VISIBLE);
                 String postName = postNameEdt.getText().toString();
                 String postDesc = postDescEdt.getText().toString();
-                postID = postName;
                 postAuthor = mAuth.getCurrentUser().getEmail();
+                postID = postName;
+
                 PostRVModal postRVModal = new PostRVModal(postName,postDesc,postID,postAuthor);
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.child(postID).exists()){
-                            Toast.makeText(AddPostActivity.this, "Post already exists. Change title", Toast.LENGTH_SHORT).show();
-                        }else{
                             databaseReference.child(postID).setValue(postRVModal);
-                            Toast.makeText(AddPostActivity.this, "Post published", Toast.LENGTH_SHORT).show();
+                            finish();
                             startActivity(new Intent(AddPostActivity.this,MainActivity.class));
-                        }
-
                         loadingPB.setVisibility(View.GONE);
+
                     }
 
                     @Override

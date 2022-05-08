@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.example.zeneblog.databinding.BottomSheetDialogBinding;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -21,6 +21,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements PostRVAdapter.Pos
     private PostRVAdapter postRVAdapter;
     private FirebaseAuth mAuth;
     private Button logout;
+    private FirebaseFirestore mFirestore;
+    private CollectionReference mItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +59,20 @@ public class MainActivity extends AppCompatActivity implements PostRVAdapter.Pos
         postRV = findViewById(R.id.idRVPosts);
         loadingPB = findViewById(R.id.idPBLoading);
         addFAB = findViewById(R.id.idAddFAB);
+
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Posts");
+
+        mFirestore=FirebaseFirestore.getInstance();
+        mItems=mFirestore.collection("Users");
+
+
         postRVModalArrayList = new ArrayList<>();
         bottomSheetRL = findViewById(R.id.idRLBSheet);
         mAuth=FirebaseAuth.getInstance();
         logout=findViewById(R.id.idLogOut);
+
+
 
         postRVAdapter = new PostRVAdapter(postRVModalArrayList,this,this);
         postRV.setLayoutManager(new LinearLayoutManager(this));
@@ -68,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements PostRVAdapter.Pos
         addFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
                 startActivity(new Intent(MainActivity.this,AddPostActivity.class));
             }
         });
@@ -77,11 +90,16 @@ public class MainActivity extends AppCompatActivity implements PostRVAdapter.Pos
                 Toast.makeText(MainActivity.this, "Successfully logged out.", Toast.LENGTH_SHORT).show();
                 mAuth.signOut();
                 Intent i = new Intent(MainActivity.this,LoginActivity.class);
+                finish();
                 startActivity(i);
+
 
             }
         });
          getAllPosts();
+
+    }
+    public void initializeData(){
 
     }
     private void getAllPosts(){
@@ -91,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements PostRVAdapter.Pos
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 loadingPB.setVisibility(View.GONE);
                 postRVModalArrayList.add(snapshot.getValue(PostRVModal.class));
+
                 postRVAdapter.notifyDataSetChanged();
             }
 
@@ -148,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements PostRVAdapter.Pos
                 if(mAuth.getCurrentUser().getEmail().equals(postAuthorTV.getText().toString())){
                     Intent i = new Intent(MainActivity.this,EditPostActivity.class);
                     i.putExtra("post",postRVModal);
+                    finish();
                     startActivity(i);
                 }else{
                     Toast.makeText(MainActivity.this, "You can only edit your own posts.", Toast.LENGTH_SHORT).show();

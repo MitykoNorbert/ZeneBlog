@@ -67,6 +67,7 @@ public class EditPostActivity extends AppCompatActivity {
                         loadingPB.setVisibility(View.GONE);
                         databaseReference.updateChildren(map);
                         Toast.makeText(EditPostActivity.this, "Post successfully updated", Toast.LENGTH_SHORT).show();
+                        finish();
                         startActivity(new Intent(EditPostActivity.this,MainActivity.class));
                     }
 
@@ -81,6 +82,7 @@ public class EditPostActivity extends AppCompatActivity {
         deletePostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
                 deletePost();
             }
         });
